@@ -1,5 +1,7 @@
 import json
+import joblib
 
+import pandas as pd
 from sklearn.model_selection import train_test_split
 
 from scripts.evaluate_models import get_model_evaluations
@@ -7,7 +9,14 @@ from scripts.preprocess_data import Preprocessing
 from scripts.train_model import get_trained_models
 
 
-def split_data(data):
+def save_model(model, filename="best_model.pkl"):
+    """
+    Save the trained model to a file.
+    """
+    joblib.dump(model, filename)
+    print(f"Model saved to {filename}")
+
+def split_data(data:pd.DataFrame):
     """
     Split data into train and test sets.
     """
@@ -47,3 +56,4 @@ if __name__ == '__main__':
     print(f"Best Model: {best_model_name} with AUC: {best_model_metrics['roc_auc_score']:.4f}")
 
     save_results(results)
+    save_model(trained_models[best_model_name])

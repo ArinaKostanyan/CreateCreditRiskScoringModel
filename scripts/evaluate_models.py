@@ -1,10 +1,11 @@
 import logging
+from typing import Dict
 
 from sklearn.metrics import classification_report, roc_auc_score
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 
-def get_model_evaluations(X_test, y_test, trained_models):
+def get_model_evaluations(X_test, y_test, trained_models)->Dict:
     """
     Evaluate all models and return evaluation metrics.
     """
