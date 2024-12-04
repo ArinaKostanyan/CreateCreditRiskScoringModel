@@ -1,13 +1,17 @@
 import json
+from pathlib import Path
+import joblib
 
+import pandas as pd
 from sklearn.model_selection import train_test_split
 
+from scripts.config import RESULTS_PATH
 from scripts.evaluate_models import get_model_evaluations
 from scripts.preprocess_data import Preprocessing
 from scripts.train_model import get_trained_models
 
 
-def split_data(data):
+def split_data(data:pd.DataFrame):
     """
     Split data into train and test sets.
     """
@@ -23,7 +27,7 @@ def get_best_model(results):
     best_model = max(results.items(), key=lambda x: x[1]['roc_auc_score'])
     return best_model[0], best_model[1]
 
-def save_results(results, output_path="model_results.json"):
+def save_results(results, output_path=Path(RESULTS_PATH+"model_results.json")):
     """
     Save evaluation results to a JSON file.
     """
@@ -33,6 +37,13 @@ def save_results(results, output_path="model_results.json"):
         print(f"Results saved to {output_path}")
     except Exception as e:
         print(f"Error saving results: {e}")
+
+def save_model(model, filename=Path(RESULTS_PATH+"best_model.pkl")):
+    """
+    Save the trained model to a file.
+    """
+    joblib.dump(model, filename)
+    print(f"Model saved to {filename}")
 
 if __name__ == '__main__':
     preprocessing = Preprocessing()
@@ -47,3 +58,4 @@ if __name__ == '__main__':
     print(f"Best Model: {best_model_name} with AUC: {best_model_metrics['roc_auc_score']:.4f}")
 
     save_results(results)
+    save_model(trained_models[best_model_name])

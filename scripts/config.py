@@ -1,5 +1,5 @@
 DATA_PATH = "data/Data.xlsx"  # Path to the input data file
-
+RESULTS_PATH = "output_data/"
 LOGISTIC_REGRESSION_PARAMS = {
     "C": 1.0,          # Regularization strength
     "max_iter": 100,   # Maximum number of iterations for optimization
